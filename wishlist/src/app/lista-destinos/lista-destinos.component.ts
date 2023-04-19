@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DestinoViaje } from '../models/destino-viaje-model';
 
 @Component({
   selector: 'app-lista-destinos',
@@ -6,8 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./lista-destinos.component.css']
 })
 export class ListaDestinosComponent {
-  destinos:string[];
+  destinos:DestinoViaje[];
   constructor() {
-    this.destinos=['Barcelona','Madrid','Malaga','Tarragona']
+    this.destinos=[]
   }
+  guardar(nombre:string, url:string):boolean  {
+    this.destinos.push(new DestinoViaje(nombre, url))
+//    console.log(this.destinos)
+    return false;
+}
 }

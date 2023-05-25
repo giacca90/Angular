@@ -8,10 +8,12 @@ import { DestinoViaje } from '../models/destino-viaje.model';
 })
 export class DestinosViajeComponent {
   @Input() destino: DestinoViaje;
+  @Input() position: number;
   @HostBinding('attr.class') cssClass='col-md-4'
   @Output() clicked: EventEmitter<DestinoViaje>
 
   constructor(){
+    this.position=0;
     this.destino=DestinoViaje.prototype; 
     this.clicked= new EventEmitter();
   }

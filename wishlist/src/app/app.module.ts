@@ -1,31 +1,39 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { DestinosViajeComponent } from './destinos-viaje/destinos-viaje.component';
+import { DestinoViajeComponent } from './destino-viaje/destino-viaje.component';
 import { ListaDestinosComponent } from './lista-destinos/lista-destinos.component';
-import { DestinoDettalleComponent } from './destino-dettalle/destino-dettalle.component';
+import { DestinoDetalleComponent } from './destino-detalle/destino-detalle.component';
+import { DestinosApiClient } from './models/destinos-api-client.model';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormDestinoViajeComponent } from './form-destino-viaje/form-destino-viaje.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'Home', pathMatch: 'full'},
-  {path: 'Home', component: ListaDestinosComponent},
-  {path: 'Destino', component: DestinoDettalleComponent},
-
-];
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: ListaDestinosComponent },
+    { path: 'destino/:id', component: DestinoDetalleComponent }
+  ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    DestinosViajeComponent,
+    DestinoViajeComponent,
     ListaDestinosComponent,
-    DestinoDettalleComponent
+    DestinoDetalleComponent,
+    FormDestinoViajeComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    DestinosApiClient
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

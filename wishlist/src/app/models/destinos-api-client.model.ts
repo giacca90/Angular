@@ -1,4 +1,4 @@
-import { DestinoViaje } from './destino-viaje-model';
+import { DestinoViaje } from './destino-viaje.model';
 
 export class DestinosApiClient {
 	destinos:DestinoViaje[];
@@ -8,7 +8,10 @@ export class DestinosApiClient {
 	add(d:DestinoViaje){
 	  this.destinos.push(d);
 	}
-	getAll(){
+	getAll():DestinoViaje[]{
 	  return this.destinos;
+    }
+	getById(id:String | null):DestinoViaje{
+	  return this.destinos.filter(function(d){return d.id.toString() == id;})[0];
     }
 }

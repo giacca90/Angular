@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { DestinoViaje } from '../models/destino-viaje.model';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap } from 'rxjs';
+import { AjaxResponse, ajax } from 'rxjs/ajax';
 @Component({
   selector: 'app-form-destino-viaje',
   templateUrl: './form-destino-viaje.component.html',
@@ -11,6 +12,7 @@ export class FormDestinoViajeComponent {
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
   fg: FormGroup;
   minLongitud: number = 3;
+  searchResults: string[] | any = [];
 
   constructor(fb: FormBuilder) {
     this.onItemAdded= new EventEmitter();
@@ -25,8 +27,25 @@ export class FormDestinoViajeComponent {
 
     this.fg.valueChanges.subscribe ((form: any) => {
       console.log('cambio de formulario: ', form)
-    })
+    });
+
   }  
+
+  ngOnInit()  {
+    let elemNombre = <HTMLInputElement>document.getElementById('nombre');
+    fromEvent(elemNombre, 'input')
+    .pipe(
+      map((e: KeyboardEvent) => (e.target as HTMLInputElement).value),
+      filter((text => text.length > 2)),
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap(() => ajax('./assets/datos.json'))
+    ).subscribe(AjaxResponse => {
+      console.log(AjaxResponse);
+      console.log(AjaxResponse.response);
+      this.searchResults = AjaxResponse.response;
+    }); 
+  }
   
   guardar(nombre: string, url: string): boolean  {
     const d = new DestinoViaje(nombre, url);

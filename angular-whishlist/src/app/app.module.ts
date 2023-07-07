@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { RouterModule, Routes, } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule as NgRxStoreModule, ActionReducerMap } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 import { AppComponent } from './app.component';
@@ -12,12 +13,10 @@ import { ListaDestinosComponent } from './lista-destinos/lista-destinos.componen
 import { DestinoDetalleComponent } from './destino-detalle/destino-detalle.component';
 import { DestinosApiClient } from './models/destinos-api-client.model';
 import { FormDestinoViajeComponent } from './form-destino-viaje/form-destino-viaje.component';
-import {
-          DestinosViajesState,
-          intializeDestinosViajesState,
-          reducerDestinosViajes,
-          DestinosViajesEffects
-        } from './models/destinos-viajes-state.model';
+import { DestinosViajesState,
+         intializeDestinosViajesState,
+         reducerDestinosViajes,
+         DestinosViajesEffects } from './models/destinos-viajes-state.model';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -25,7 +24,7 @@ const routes: Routes = [
     { path: 'destino/:id', component: DestinoDetalleComponent }
   ];
 
-//redux init
+// redux init
 export interface AppState {
   destinos: DestinosViajesState;
 };
@@ -34,10 +33,10 @@ const reducers: ActionReducerMap<AppState> = {
   destinos: reducerDestinosViajes
 };
 
-let reducersInitialState = {
+const reducersInitialState = {
     destinos: intializeDestinosViajesState()
 };
-//fin redux init
+// fin redux init
 
 @NgModule({
   declarations: [
@@ -53,7 +52,8 @@ let reducersInitialState = {
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     NgRxStoreModule.forRoot(reducers, { initialState: reducersInitialState }),
-    EffectsModule.forRoot([DestinosViajesEffects])
+    EffectsModule.forRoot([DestinosViajesEffects]),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [
     DestinosApiClient

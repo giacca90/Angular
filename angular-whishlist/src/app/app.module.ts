@@ -24,7 +24,8 @@ import { AuthService } from './services/auth.service';
 import { VuelosMainComponentComponent } from './components/vuelos/vuelos-main-component/vuelos-main-component.component'  //'./components/vuelos/vuelos-main/vuelos-main.component';
 import { VuelosMasInfoComponentComponent } from './components/vuelos/vuelos-mas-info-component/vuelos-mas-info-component.component'   //'./components/vuelos/vuelos-mas-info/vuelos-mas-info.component';
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalles-component/vuelos-detalles-component.component'  //'./components/vuelos/vuelos-detalle/vuelos-detalle.component';
-import { VuelosComponentComponent } from './components/vuelos/vuelos-component/vuelos-component.component'  //'./components/vuelos/vuelos/vuelos.component';
+import { VuelosComponentComponent } from './components/vuelos/vuelos-component/vuelos-component.component';
+import { ReservasModule } from './reservas/reservas.module'  //'./components/vuelos/vuelos/vuelos.component';
 
 export const childrenRoutesVuelos: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
@@ -84,7 +85,8 @@ const reducersInitialState = {
     RouterModule.forRoot(routes),
     NgRxStoreModule.forRoot(reducers, { initialState: reducersInitialState }),
     EffectsModule.forRoot([DestinosViajesEffects]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    ReservasModule
   ],
   providers: [
     DestinosApiClient,

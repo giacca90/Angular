@@ -36,6 +36,7 @@ import { env } from 'process';
 import { DestinoViaje } from './models/destino-viaje.model';
 import { Observable, from } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
+import { EspiameDirective } from './espiame.directive';
 // app config
 export interface AppConfig {
   apiEndpoint: String;
@@ -183,7 +184,8 @@ function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     VuelosMasInfoComponentComponent,
     VuelosDetalleComponent,
-    VuelosMainComponentComponent
+    VuelosMainComponentComponent,
+    EspiameDirective
   ],
   imports: [
     BrowserModule,

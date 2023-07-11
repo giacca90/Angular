@@ -37,6 +37,7 @@ import { DestinoViaje } from './models/destino-viaje.model';
 import { Observable, from } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 import { EspiameDirective } from './espiame.directive';
+import { TrackearClickDirective } from './trackear-click.directive';
 // app config
 export interface AppConfig {
   apiEndpoint: String;
@@ -185,7 +186,8 @@ function HttpLoaderFactory(http: HttpClient) {
     VuelosMasInfoComponentComponent,
     VuelosDetalleComponent,
     VuelosMainComponentComponent,
-    EspiameDirective
+    EspiameDirective,
+    TrackearClickDirective
   ],
   imports: [
     BrowserModule,

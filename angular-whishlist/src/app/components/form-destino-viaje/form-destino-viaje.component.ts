@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { DestinoViaje } from './../../models/destino-viaje.model';
+import { Component, EventEmitter, Output, OnInit, Inject, forwardRef } from '@angular/core';import { DestinoViaje } from './../../models/destino-viaje.model';
 import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { ajax } from 'rxjs/ajax';
+import { AjaxResponse, ajax } from 'rxjs/ajax';
+import { AppConfig, APP_CONFIG } from 'src/app/app.module';
 
 @Component({
   selector: 'app-form-destino-viaje',
@@ -16,7 +16,7 @@ export class FormDestinoViajeComponent implements OnInit {
   minLongitud = 5;
   searchResults:string[];
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, @Inject(forwardRef(() => APP_CONFIG)) private config: AppConfig) {
     this.onItemAdded = new EventEmitter();
 	
 	this.fg = fb.group({
@@ -49,14 +49,9 @@ export class FormDestinoViajeComponent implements OnInit {
 		  filter(text => text.length > 2),
 		  debounceTime(120),
 		  distinctUntilChanged(),
-		  switchMap(() => ajax('/assets/datos.json'))
-		).subscribe(ajaxResponse => {
-	 		this.searchResults = ajaxResponse.response
-				//filtramos client side solo para simplificar el ejemplo
-	 			.filter(function(x){
-	 				return x.toLowerCase().includes(elemNombre.value.toLowerCase());
- 				});
-		});
+		  switchMap((text: string) => ajax(this.config.apiEndpoint + '/ciudades?q=' + text))
+		).subscribe(AjaxResponse => this.searchResults = AjaxResponse.response)
+		  ;
   }
 
   guardar(nombre:string, url:string):boolean {

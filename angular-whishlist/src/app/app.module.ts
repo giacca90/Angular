@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule as NgRxStoreModule, ActionReducerMap } from '@ngrx/store';
@@ -25,6 +25,17 @@ import { VuelosMasInfoComponentComponent } from './components/vuelos/vuelos-mas-
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalles-component/vuelos-detalles-component.component'  //'./components/vuelos/vuelos-detalle/vuelos-detalle.component';
 import { VuelosComponentComponent } from './components/vuelos/vuelos-component/vuelos-component.component';
 import { ReservasModule } from './reservas/reservas.module'  //'./components/vuelos/vuelos/vuelos.component';
+import { env } from 'process';
+
+// app config
+export interface AppConfig {
+  apiEndpoint: String;
+}
+const APP_CONFIG_VALUE: AppConfig = {
+  apiEndpoint: 'http://localhost:3000'
+};
+export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
+// fin app config
 
 export const childrenRoutesVuelos: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
@@ -89,7 +100,8 @@ const reducersInitialState = {
   ],
   providers: [
     AuthService,
-    UsuarioLogueadoGuard
+    UsuarioLogueadoGuard,
+    { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE  }
   ],
   bootstrap: [AppComponent]
 })

@@ -2,7 +2,6 @@ import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
 import { DestinosApiClient } from './../../models/destinos-api-client.model'  //'./../models/destinos-api-client.model';
 import { DestinoViaje } from './../../models/destino-viaje.model';
 import { ActivatedRoute } from '@angular/router';
-import { Console } from 'console';
 import { AppState } from 'src/app/app.module';
 import { Store } from '@ngrx/store';
 

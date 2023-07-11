@@ -5,6 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule as NgRxStoreModule, ActionReducerMap, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import Dexie from 'dexie';
+
+
 import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from '@angular/common/http'
 import { AppComponent } from './app.component';
 import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.component';
@@ -28,6 +31,7 @@ import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalles-comp
 import { VuelosComponentComponent } from './components/vuelos/vuelos-component/vuelos-component.component';
 import { ReservasModule } from './reservas/reservas.module'  //'./components/vuelos/vuelos/vuelos.component';
 import { env } from 'process';
+import { DestinoViaje } from './models/destino-viaje.model';
 
 // app config
 export interface AppConfig {
@@ -95,6 +99,24 @@ const reducersInitialState = {
     destinos: intializeDestinosViajesState()
 };
 // fin redux init
+
+// dexie db
+@Injectable({
+  providedIn: 'root'
+})
+export class MyDatabase extends Dexie {
+  destinos: Dexie.Table<DestinoViaje, number>;
+  constructor () {
+      super('MyDatabase');
+      this.version(1).stores({
+        destinos: '++id, nombre, imagenUrl',
+      });
+  }
+}
+
+export const db = new MyDatabase();
+// fin dexie db
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -126,7 +148,8 @@ const reducersInitialState = {
     UsuarioLogueadoGuard,
     { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE },
     AppLoadService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
+    MyDatabase
   ],
   bootstrap: [AppComponent]
 })
